@@ -102,6 +102,7 @@
 
 /* Gradient fires once all chars lock */
 .line2Accent {
+  color: #c84800;
   background: linear-gradient(130deg, #e06000 0%, #c84800 30%, #f09020 60%, #e06000 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -194,19 +195,27 @@
 
   .line1,
   .line2 {
-    font-size: clamp(1.35rem, 7.3vw, 2rem);
+    font-size: clamp(1.15rem, 6.2vw, 1.75rem);
     letter-spacing: -0.015em;
   }
 
   .line1 {
-    white-space: normal;
-    text-wrap: balance;
-    max-width: 13ch;
-    margin-inline: auto;
+    white-space: nowrap;
   }
 
   .line2wrapper {
     margin-top: 0.16em;
+  }
+
+  .line2Accent {
+    background: none;
+    animation: none;
+    color: #c84800;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  .line2Accent .charResolved {
+    color: #c84800;
   }
 
   .char {

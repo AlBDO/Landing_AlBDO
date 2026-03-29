@@ -1,84 +1,48 @@
 import styles from "./page.module.css";
-import { HeroCanvasLoader, RingsCanvasLoader } from "./components/Loaders";
+import { HeroCanvasLoader, RingsCanvasLoader, CTACanvasLoader, CursorGlowLoader, MatrixTitleLoader } from "./components/Loaders";
+import ScrollReveal from "./components/ScrollReveal";
+import CountUp     from "./components/CountUp";
+import Ticker      from "./components/Ticker";
+import TiltCard    from "./components/TiltCard";
 
 const GITHUB = "https://github.com/AlBDO/AlBDO-v-0.1.0";
 
 const metrics = [
   { value: "0.07 ms", label: "Cached response" },
-  { value: "11 MB", label: "Idle server memory" },
-  { value: "0 KB JS", label: "Tier A payload" },
-  { value: "1.4 s", label: "Cold build time" },
+  { value: "11 MB",   label: "Idle server memory" },
+  { value: "0 KB",    label: "Tier A JS payload" },
+  { value: "1.4 s",   label: "Cold build time" },
 ];
 
 const features = [
-  {
-    icon: "⬡",
-    title: "Effect Lattice",
-    desc: "At compile time, ALBDO builds an EffectProfile for every component — analysing hooks, async, I/O, and side effects to determine exactly what JavaScript to ship.",
-  },
-  {
-    icon: "⚙",
-    title: "Rust-Native Core",
-    desc: "SWC-powered AST analysis, lock-free parallel component traversal via DashMap, and a zero-JavaScript hot path served by axum + Tokio.",
-  },
-  {
-    icon: "◈",
-    title: "Zero-Cost Static Pages",
-    desc: "Tier A components produce zero bytes of client JavaScript. No hydration, no bundle, no runtime tax — pure HTML from the server.",
-  },
-  {
-    icon: "⬡",
-    title: "Selective Hydration",
-    desc: "Tier B components hydrate only the reactive islands that need it. The rest of the page remains inert, cutting transfer and parse time.",
-  },
-  {
-    icon: "⟡",
-    title: "No Rewrites Needed",
-    desc: "ALBDO accepts the JSX and TSX files your team already writes. No new primitives, no framework migration — just point and compile.",
-  },
-  {
-    icon: "▣",
-    title: "Single Binary Deploy",
-    desc: "Ship a self-contained Rust binary. Docker images under 30 MB. Compare that to the 300–800 MB of a typical Node.js container.",
-  },
+  { icon: "⬡", title: "Effect Lattice",        desc: "At compile time, ALBDO builds an EffectProfile for every component — analysing hooks, async, I/O, and side effects to determine exactly what JavaScript to ship." },
+  { icon: "⚙", title: "Rust-Native Core",       desc: "SWC-powered AST analysis, lock-free parallel component traversal via DashMap, and a zero-JavaScript hot path served by axum + Tokio." },
+  { icon: "◈", title: "Zero-Cost Static Pages", desc: "Tier A components produce zero bytes of client JavaScript. No hydration, no bundle, no runtime tax — pure HTML from the server." },
+  { icon: "⬡", title: "Selective Hydration",    desc: "Tier B components hydrate only the reactive islands that need it. The rest of the page remains inert, cutting transfer and parse time." },
+  { icon: "⟡", title: "No Rewrites Needed",     desc: "ALBDO accepts the JSX and TSX files your team already writes. No new primitives, no framework migration — just point and compile." },
+  { icon: "▣", title: "Single Binary Deploy",   desc: "Ship a self-contained Rust binary. Docker images under 30 MB. Compare that to the 300–800 MB of a typical Node.js container." },
 ];
 
 const tiers = [
-  {
-    name: "Tier A",
-    tag: "Static / Pure",
-    js: "0 KB JS",
-    desc: "No hooks, no async, no side effects. Ships zero JavaScript to the client.",
-    color: "tierA",
-  },
-  {
-    name: "Tier B",
-    tag: "Reactive Islands",
-    js: "Minimal JS",
-    desc: "Selective hydration for reactive regions only. The rest of the page stays static.",
-    color: "tierB",
-  },
-  {
-    name: "Tier C",
-    tag: "Full Reactive",
-    js: "Full hydration",
-    desc: "Complex client state. Full hydration where the component truly demands it.",
-    color: "tierC",
-  },
+  { name: "Tier A", tag: "Static / Pure",    js: "0 KB JS",       desc: "No hooks, no async, no side effects. Ships zero JavaScript to the client.",                           color: "tierA" },
+  { name: "Tier B", tag: "Reactive Islands", js: "Minimal JS",    desc: "Selective hydration for reactive regions only. The rest of the page stays static.",                   color: "tierB" },
+  { name: "Tier C", tag: "Full Reactive",    js: "Full hydration", desc: "Complex client state. Full hydration where the component truly demands it.",                         color: "tierC" },
 ];
 
 const comparisons = [
-  { label: "JavaScript in hot path", albedo: "None", others: "Always" },
-  { label: "Idle memory (single service)", albedo: "11 MB", others: "260 MB+" },
-  { label: "Tier A page JS payload", albedo: "0 KB", others: "50–400 KB" },
-  { label: "Docker image size", albedo: "< 30 MB", others: "300–800 MB" },
-  { label: "Cached response time", albedo: "0.07 ms", others: "5–40 ms" },
-  { label: "50-service baseline RAM", albedo: "< 600 MB", others: "~13 GB" },
+  { label: "JavaScript in hot path",        albedo: "None",     others: "Always"   },
+  { label: "Idle memory (single service)",  albedo: "11 MB",    others: "260 MB+"  },
+  { label: "Tier A page JS payload",        albedo: "0 KB",     others: "50–400 KB"},
+  { label: "Docker image size",             albedo: "< 30 MB",  others: "300–800 MB"},
+  { label: "Cached response time",          albedo: "0.07 ms",  others: "5–40 ms"  },
+  { label: "50-service baseline RAM",       albedo: "< 600 MB", others: "~13 GB"   },
 ];
 
 export default function Home() {
   return (
     <div className={styles.root}>
+      <CursorGlowLoader />
+
       {/* ── NAV ── */}
       <nav className={styles.nav}>
         <span className={styles.navLogo}>ALBDO</span>
@@ -94,85 +58,103 @@ export default function Home() {
 
       {/* ── HERO ── */}
       <section className={styles.hero}>
-        {/* Three.js background */}
         <HeroCanvasLoader />
-
         <div className={styles.heroContent}>
-          <div className={styles.heroBadge}>Pre-Release · March 2026</div>
-          <h1 className={styles.heroHeadline}>
-            The web runtime<br />
-            <span className={styles.heroAccent}>that thinks.</span>
-          </h1>
-          <p className={styles.heroSub}>
-            ALBDO is a Rust-native DOM render compiler and HTTP runtime for JSX&nbsp;/&nbsp;TSX apps.
-            It statically analyses every component and ships exactly the right amount of JavaScript —
-            including none at all.
-          </p>
-          <div className={styles.heroCtas}>
-            <a href={GITHUB} target="_blank" rel="noopener noreferrer" className={styles.ctaPrimary}>
-              View on GitHub
-            </a>
-            <a href="#how-it-works" className={styles.ctaSecondary}>
-              How it works ↓
-            </a>
-          </div>
-          <p className={styles.heroCredit}>By Bishal Sen &amp; Pinaki Singha</p>
+          <ScrollReveal delay={0}>
+            <div className={styles.heroBadge}>Pre-Release · March 2026</div>
+          </ScrollReveal>
+          <ScrollReveal delay={100}>
+            <h1 className={styles.heroHeadline}>
+              <MatrixTitleLoader />
+            </h1>
+          </ScrollReveal>
+          <ScrollReveal delay={220}>
+            <p className={styles.heroSub}>
+              ALBDO is a Rust-native DOM render compiler and HTTP runtime for JSX&nbsp;/&nbsp;TSX apps.
+              It statically analyses every component and ships exactly the right amount of JavaScript —
+              including none at all.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delay={340}>
+            <div className={styles.heroCtas}>
+              <a href={GITHUB} target="_blank" rel="noopener noreferrer" className={`${styles.ctaPrimary} ${styles.magneticBtn}`}>
+                View on GitHub
+              </a>
+              <a href="#how-it-works" className={`${styles.ctaSecondary} ${styles.magneticBtn}`}>
+                How it works ↓
+              </a>
+            </div>
+          </ScrollReveal>
+          <ScrollReveal delay={440}>
+            <p className={styles.heroCredit}>By Bishal Sen &amp; Pinaki Singha</p>
+          </ScrollReveal>
         </div>
       </section>
 
+      {/* ── TICKER ── */}
+      <Ticker />
+
       {/* ── METRICS ── */}
-      <section className={styles.metricsBar}>
-        {metrics.map((m) => (
-          <div key={m.label} className={styles.metric}>
-            <span className={styles.metricValue}>{m.value}</span>
-            <span className={styles.metricLabel}>{m.label}</span>
-          </div>
-        ))}
-      </section>
+      <ScrollReveal direction="fade">
+        <section className={styles.metricsBar}>
+          {metrics.map((m, i) => (
+            <div key={m.label} className={styles.metric} style={{ animationDelay: `${i * 80}ms` }}>
+              <CountUp value={m.value} className={styles.metricValue} duration={1400} />
+              <span className={styles.metricLabel}>{m.label}</span>
+            </div>
+          ))}
+        </section>
+      </ScrollReveal>
 
       {/* ── HOW IT WORKS / TIERS ── */}
       <section className={styles.section} id="how-it-works">
-        <div className={styles.sectionHead}>
-          <p className={styles.eyebrow}>Effect Lattice</p>
-          <h2 className={styles.sectionTitle}>Automatic tiering at compile time</h2>
-          <p className={styles.sectionSub}>
-            ALBDO builds an <code>EffectProfile</code> for every component — hooks, async operations,
-            I/O, side effects — and assigns a deterministic rendering tier. No annotations required.
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className={styles.sectionHead}>
+            <p className={styles.eyebrow}>Effect Lattice</p>
+            <h2 className={styles.sectionTitle}>Automatic tiering at compile time</h2>
+            <p className={styles.sectionSub}>
+              ALBDO builds an <code>EffectProfile</code> for every component — hooks, async operations,
+              I/O, side effects — and assigns a deterministic rendering tier. No annotations required.
+            </p>
+          </div>
+        </ScrollReveal>
 
         <div className={styles.tiers}>
-          {tiers.map((t) => (
-            <div key={t.name} className={`${styles.tierCard} ${styles[t.color]}`}>
-              <div className={styles.tierTop}>
-                <span className={styles.tierName}>{t.name}</span>
-                <span className={styles.tierTag}>{t.tag}</span>
-              </div>
-              <span className={styles.tierJs}>{t.js}</span>
-              <p className={styles.tierDesc}>{t.desc}</p>
-            </div>
+          {tiers.map((t, i) => (
+            <ScrollReveal key={t.name} delay={i * 120}>
+              <TiltCard className={`${styles.tierCard} ${styles[t.color]}`}>
+                <div className={styles.tierTop}>
+                  <span className={styles.tierName}>{t.name}</span>
+                  <span className={styles.tierTag}>{t.tag}</span>
+                </div>
+                <span className={styles.tierJs}>{t.js}</span>
+                <p className={styles.tierDesc}>{t.desc}</p>
+              </TiltCard>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       {/* ── FEATURES ── */}
       <section className={`${styles.section} ${styles.sectionWithRings}`}>
-        {/* Three.js rings behind features */}
         <RingsCanvasLoader />
-
         <div className={styles.sectionRelative}>
-          <div className={styles.sectionHead}>
-            <p className={styles.eyebrow}>Architecture</p>
-            <h2 className={styles.sectionTitle}>Every layer built with intent</h2>
-          </div>
+          <ScrollReveal>
+            <div className={styles.sectionHead}>
+              <p className={styles.eyebrow}>Architecture</p>
+              <h2 className={styles.sectionTitle}>Every layer built with intent</h2>
+            </div>
+          </ScrollReveal>
 
           <div className={styles.featureGrid}>
-            {features.map((f) => (
-              <div key={f.title} className={styles.featureCard}>
-                <span className={styles.featureIcon}>{f.icon}</span>
-                <h3 className={styles.featureTitle}>{f.title}</h3>
-                <p className={styles.featureDesc}>{f.desc}</p>
-              </div>
+            {features.map((f, i) => (
+              <ScrollReveal key={f.title} delay={(i % 3) * 100}>
+                <TiltCard className={styles.featureCard} intensity={7}>
+                  <span className={styles.featureIcon}>{f.icon}</span>
+                  <h3 className={styles.featureTitle}>{f.title}</h3>
+                  <p className={styles.featureDesc}>{f.desc}</p>
+                </TiltCard>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -180,13 +162,13 @@ export default function Home() {
 
       {/* ── COMPARISON ── */}
       <section className={styles.section}>
-        <div className={styles.sectionHead}>
-          <p className={styles.eyebrow}>Benchmarks</p>
-          <h2 className={styles.sectionTitle}>A different execution model</h2>
-          <p className={styles.sectionSub}>
-            Measured on a working pre-release build. Not projections.
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className={styles.sectionHead}>
+            <p className={styles.eyebrow}>Benchmarks</p>
+            <h2 className={styles.sectionTitle}>A different execution model</h2>
+            <p className={styles.sectionSub}>Measured on a working pre-release build. Not projections.</p>
+          </div>
+        </ScrollReveal>
 
         <div className={styles.compTable}>
           <div className={styles.compHeader}>
@@ -194,36 +176,39 @@ export default function Home() {
             <span className={styles.compColAlbedo}>ALBDO</span>
             <span className={styles.compColOther}>Node.js / Next.js</span>
           </div>
-          {comparisons.map((row) => (
-            <div key={row.label} className={styles.compRow}>
-              <span className={styles.compLabel}>{row.label}</span>
-              <span className={styles.compAlbedo}>{row.albedo}</span>
-              <span className={styles.compOther}>{row.others}</span>
-            </div>
+          {comparisons.map((row, i) => (
+            <ScrollReveal key={row.label} delay={i * 70} direction={i % 2 === 0 ? "left" : "right"}>
+              <div className={styles.compRow}>
+                <span className={styles.compLabel}>{row.label}</span>
+                <span className={styles.compAlbedo}>{row.albedo}</span>
+                <span className={styles.compOther}>{row.others}</span>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
 
       {/* ── CTA BANNER ── */}
-      <section className={styles.ctaBanner}>
-        <h2 className={styles.ctaBannerTitle}>Ready to see it in action?</h2>
-        <p className={styles.ctaBannerSub}>
-          Explore the pre-release source, star the repo, or open an issue.
-        </p>
-        <a href={GITHUB} target="_blank" rel="noopener noreferrer" className={styles.ctaPrimary}>
-          View on GitHub →
-        </a>
+      <section className={`${styles.ctaBanner} ${styles.ctaBannerRelative}`}>
+        <CTACanvasLoader />
+        <div className={styles.ctaBannerContent}>
+          <ScrollReveal>
+            <h2 className={styles.ctaBannerTitle}>Ready to see it in action?</h2>
+            <p className={styles.ctaBannerSub}>Explore the pre-release source, star the repo, or open an issue.</p>
+          </ScrollReveal>
+          <ScrollReveal delay={150}>
+            <a href={GITHUB} target="_blank" rel="noopener noreferrer" className={styles.ctaPrimary}>
+              View on GitHub →
+            </a>
+          </ScrollReveal>
+        </div>
       </section>
 
       {/* ── FOOTER ── */}
       <footer className={styles.footer}>
         <span className={styles.footerLogo}>ALBDO</span>
-        <span className={styles.footerText}>
-          MIT License · Pre-Release 0.1.0 · Built by Bishal Sen &amp; Pinaki Singha
-        </span>
-        <a href={GITHUB} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>
-          GitHub ↗
-        </a>
+        <span className={styles.footerText}>MIT License · Pre-Release 0.1.0 · Built by Bishal Sen &amp; Pinaki Singha</span>
+        <a href={GITHUB} target="_blank" rel="noopener noreferrer" className={styles.footerLink}>GitHub ↗</a>
       </footer>
     </div>
   );

@@ -101,24 +101,35 @@
   color: #7a3000;
   margin-bottom: 1.8rem;
   text-transform: uppercase;
+  animation: badgePulse 3s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(230, 140, 20, 0); }
+  50%       { box-shadow: 0 0 0 7px rgba(230, 140, 20, 0.13); }
 }
 
 .heroHeadline {
-  font-family: var(--font-display), sans-serif;
-  font-size: clamp(3rem, 9vw, 6.5rem);
-  font-weight: 800;
-  line-height: 1.05;
-  color: #2c1200;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.3rem;
+  margin: 0 0 0.3rem;
+  padding: 0;
+  line-height: 1;
+  font-size: inherit;
   position: relative;
+  /* sizing & colour owned by MatrixTitle component */
 }
 
 .heroAccent {
-  background: linear-gradient(130deg, #e06000 0%, #c84800 55%, #f09020 100%);
+  background: linear-gradient(130deg, #e06000 0%, #c84800 30%, #f09020 60%, #e06000 100%);
+  background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gradientShift 4s linear infinite;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
 }
 
 .heroSub {
@@ -215,6 +226,17 @@
   font-weight: 800;
   color: #8b3a00;
   letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #8b3a00 0%, #c06020 40%, #8b3a00 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
 }
 
 .metricLabel {
@@ -508,6 +530,36 @@
   color: #6a3010;
   margin-bottom: 0.5rem;
 }
+
+.ctaBannerRelative {
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaBannerContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ─── MAGNETIC BUTTON ───────────────────────────────────────────── */
+.magneticBtn {
+  position: relative;
+  overflow: hidden;
+}
+.magneticBtn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.magneticBtn:hover::after { opacity: 1; }
 
 /* ─── FOOTER ─────────────────────────────────────────────────────────────── */
 .footer {

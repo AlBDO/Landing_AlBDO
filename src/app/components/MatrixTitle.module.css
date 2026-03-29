@@ -168,3 +168,56 @@
   60%  { transform: scale(0.96); opacity: 1; }
   100% { transform: scale(1);    opacity: 1; }
 }
+
+@media (max-width: 900px) {
+  .line1,
+  .line2 {
+    font-size: clamp(2.2rem, 8.6vw, 4.9rem);
+  }
+}
+
+@media (max-width: 560px) {
+  .root {
+    padding-inline: 0.35rem;
+  }
+
+  .progressBar {
+    height: 18px;
+    margin: 0 auto 0.8rem;
+  }
+
+  .progressLabel {
+    font-size: 0.54rem;
+    letter-spacing: 0.07em;
+    padding: 0 8px;
+  }
+
+  .line1,
+  .line2 {
+    font-size: clamp(1.35rem, 7.3vw, 2rem);
+    letter-spacing: -0.015em;
+  }
+
+  .line1 {
+    white-space: normal;
+    text-wrap: balance;
+    max-width: 13ch;
+    margin-inline: auto;
+  }
+
+  .line2wrapper {
+    margin-top: 0.16em;
+  }
+
+  .char {
+    min-width: 0.5em;
+  }
+
+  .space {
+    width: 0.2em;
+  }
+
+  .scanlines {
+    inset: -4px;
+  }
+}

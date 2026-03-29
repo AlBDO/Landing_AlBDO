@@ -1,20 +1,20 @@
-"use client";
+﻿"use client";
 import { useEffect, useRef, useState, useCallback } from "react";
 import styles from "./MatrixTitle.module.css";
 
-// ── GPU glyph pool ────────────────────────────────────────────
+// â”€â”€ GPU glyph pool â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const GLYPHS =
   "0123456789ABCDEF" +
-  "░▒▓▄▀■□◆◇" +
-  "×÷±∂∑√∞≈≠≡" +
-  "⊕⊗⊘→←↑↓" +
+  "â–‘â–’â–“â–„â–€â– â–¡â—†â—‡" +
+  "Ã—Ã·Â±âˆ‚âˆ‘âˆšâˆžâ‰ˆâ‰ â‰¡" +
+  "âŠ•âŠ—âŠ˜â†’â†â†‘â†“" +
   "01001101 10110100";
 
 function randomGlyph() {
   return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 }
 
-// ── Config ────────────────────────────────────────────────────
+// â”€â”€ Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const LINE1 = "The web runtime";
 const LINE2 = "that thinks.";
 const ALL_CHARS = [...LINE1, "\n", ...LINE2];
@@ -40,7 +40,7 @@ export default function MatrixTitle() {
       resolving: false,
     }))
   );
-  const [progress, setProgress] = useState(0); // 0–100
+  const [progress, setProgress] = useState(0); // 0â€“100
   const [phase, setPhase] = useState<"boot" | "loading" | "done">("boot");
 
   // label shown in the HUD bar
@@ -178,19 +178,19 @@ export default function MatrixTitle() {
       {phase !== "done" && <div className={styles.scanlines} aria-hidden />}
 
       {/* Progress bar */}
-      <div className={styles.progressBar} aria-hidden>
-        <div
-          className={styles.progressFill}
-          style={{ width: `${progress}%` }}
-        />
-        <span className={styles.progressLabel}>
-          {phase === "boot"
-            ? "ALBDO // BOOT"
-            : phase === "loading"
-            ? `${hudLabel} ··· ${progress}%`
-            : "RENDER COMPLETE ✓"}
-        </span>
-      </div>
+      {phase !== "done" && (
+        <div className={styles.progressBar} aria-hidden>
+          <div
+            className={styles.progressFill}
+            style={{ width: `${progress}%` }}
+          />
+          <span className={styles.progressLabel}>
+            {phase === "boot"
+              ? "ALBDO // BOOT"
+              : `${hudLabel} ··· ${progress}%`}
+          </span>
+        </div>
+      )}
 
       {/* Line 1 */}
       <div className={styles.line1} aria-label={LINE1}>
@@ -210,7 +210,7 @@ export default function MatrixTitle() {
         })}
       </div>
 
-      {/* Line 2 — accent gradient once resolved */}
+      {/* Line 2 â€” accent gradient once resolved */}
       <div className={styles.line2wrapper} aria-label={LINE2}>
         <span
           className={`${styles.line2} ${
